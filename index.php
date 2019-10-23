@@ -129,3 +129,57 @@ for($a = 1; $a <=9; $a++){
 ?>
 </table>
 <!-- table込みで作成見やすくしてみた -->
+<!-- 解決 -->
+
+
+<!-- 問題8
+100以下の素数を表示するプログラムを書いてください。 素数とは、1とその数自身以外では割り切れない数です。 1は素数には含みません。 例: 7は1と7でしか割れないため素数です。 -->
+
+
+
+
+
+<?php
+function color_get($i) {
+    if ($i == 0) return '#ff0000'; elseif ($i == 6) return '#0000ff'; else return '#000000';
+}
+$m = $_GET['m'];
+if ($m) {
+    $year = date('Y', strtotime($m . '01'));
+    $month = date('n', strtotime($m . '01'));
+} else {
+    $year = date('Y');
+    $month = date('n');
+}
+$day = date('j');
+$weekday = array('日', '月', '火', '水', '木', '金', '土');
+echo '<TABLE cellpadding="4" cellspacing="1" style="background-color : #aaaaaa;text-align : center;"><CAPTION style="padding : 4px;"><A href="?m=' . date('Ym', mktime(0, 0, 0, $month , 1, $year - 1)) . '">&lt;&lt;</A> <A href="?m=' . date('Ym', mktime(0, 0, 0, $month - 1 , 1, $year)) . '">&lt;</A> ' . $year . '年' . $month . '月 <A href="?m=' . date('Ym', mktime(0, 0, 0, $month + 1 , 1, $year)) . '">&gt;</A> <A href="?m=' . date('Ym', mktime(0, 0, 0, $month , 1, $year + 1)) . '">&gt;&gt;</A></CAPTION><TBODY><TR>';
+$i = 0;
+while ($i <= 6) {
+    $c = color_get($i);
+    echo '<TD style="color : ' . $c . ';background-color : #eeeeee;">' . $weekday[$i] . '</TD>';
+    $i++;
+}
+echo '</TR><TR>';
+$i = 0;
+while ($i != date('w', mktime(0, 0, 0, $month, 1, $year))) {
+    echo '<TD style="background-color : #ffffff;">　</TD>';
+    $i++;
+}
+for ($days = 1; checkdate($month, $days, $year); $days++) {
+    if ($i > 6) {
+        echo '</TR><TR>';
+        $i = 0;
+    }
+    $c = color_get($i);
+    if ($days == $day) $bc = '#ffff00'; else $bc = '#ffffff';
+    echo '<TD style="color : ' . $c . ';background-color : ' . $bc . ';">' . $days . '</TD>';
+    $i++;
+}
+while ($i < 7) {
+    echo '<TD style="background-color : #ffffff;">　</TD>';
+    $i++;
+}
+echo '</TR></TBODY></TABLE>';
+
+?>
